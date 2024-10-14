@@ -1,0 +1,21 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using MovieStreamingService.Application.Interfaces;
+using MovieStreamingService.Application.Services;
+using MovieStreamingService.Application.Services.Common;
+using System.Reflection;
+using Microsoft.Extensions.Configuration;
+
+namespace MovieStreamingService.Application;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var secretKey = configuration["jwt-key"];
+        services.AddSingleton(secretKey);
+
+        services.AddScoped<JWTTokenService>();
+        
+        return services;
+    }
+}
