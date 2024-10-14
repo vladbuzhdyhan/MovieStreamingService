@@ -2,9 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.IdentityModel.Tokens;
 using MovieStreamingService.Persistence;
-using MovieStreamingService.WebApi.Middlewars;
 using System.Text;
 using MovieStreamingService.Application;
+using MovieStreamingService.WebApi.Middlewares;
+using Microsoft.AspNetCore.Antiforgery;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -33,10 +34,13 @@ builder.Services.AddAuthentication(options =>
         };
     });
 builder.Services.AddAuthorization();
+builder.Services.AddAntiforgery(options => { options.HeaderName = "x-xsrf-token"; });
 builder.Services.AddCors();
 
 builder.Services.AddPersistenceLayer(configuration);
 builder.Services.AddApplicationLayer(configuration);
+
+// -----
 
 var app = builder.Build();
 
@@ -59,12 +63,13 @@ app.UseCookiePolicy(new CookiePolicyOptions
     Secure = CookieSecurePolicy.Always
 });
 
-app.UseMiddleware<SecureJwtMiddleware>();
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseAuthentication();
+
+app.UseMiddleware<SecureJwtMiddleware>();
+app.UseMiddleware<XsrfProtectionMiddleware>(app.Services.GetRequiredService<IAntiforgery>());
 
 app.MapControllers();
 

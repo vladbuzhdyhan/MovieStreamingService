@@ -14,8 +14,14 @@ public static class DependencyInjection
         var secretKey = configuration["jwt-key"];
         services.AddSingleton(secretKey);
 
-        services.AddScoped<JWTTokenService>();
-        
+        services.AddServices();
+
         return services;
+    }
+
+    private static void AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<JWTTokenService>();
     }
 }

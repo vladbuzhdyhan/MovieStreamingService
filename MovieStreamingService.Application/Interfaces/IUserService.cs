@@ -5,4 +5,5 @@ namespace MovieStreamingService.Application.Interfaces;
 
 public interface IUserService : IService<User>
 {
+    User Register(User user);
 }

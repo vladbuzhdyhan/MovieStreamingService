@@ -1,4 +1,4 @@
-﻿namespace MovieStreamingService.WebApi.Middlewars;
+﻿namespace MovieStreamingService.WebApi.Middlewares;
 
 public class SecureJwtMiddleware
 {

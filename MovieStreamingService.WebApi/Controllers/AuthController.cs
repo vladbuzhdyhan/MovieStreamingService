@@ -3,6 +3,7 @@ using MovieStreamingService.Application.Interfaces;
 using MovieStreamingService.Application.Services;
 using MovieStreamingService.Application.Services.Common;
 using MovieStreamingService.Domain.Interfaces;
+using MovieStreamingService.Domain.Models;
 using MovieStreamingService.WebApi.Controllers.Models;
 
 namespace MovieStreamingService.WebApi.Controllers;
@@ -11,12 +12,31 @@ namespace MovieStreamingService.WebApi.Controllers;
 [Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
+    private readonly IUserService _userService;
     private readonly IUserRepository _userRepository;
     private readonly JWTTokenService _jwtTokenService;
-    public AuthController(IUserRepository userRepository, JWTTokenService jwtTokenService)
+    public AuthController(IUserService userService, IUserRepository userRepository, JWTTokenService jwtTokenService)
     {
+        _userService = userService;
         _userRepository = userRepository;
         _jwtTokenService = jwtTokenService;
+    }
+
+    [HttpPost("register")]
+    public IActionResult Register([FromBody] RegisterModel registerModel)
+    {
+        var user = new User
+        {
+            Login = registerModel.Username,
+            PasswordHash = registerModel.Password,
+            Email = registerModel.Email,
+            Birthday = registerModel.Birthday,
+            Gender = registerModel.Gender
+        };
+
+        _userService.Register(user);
+
+        return Ok();
     }
 
     [HttpPost("login")]
@@ -29,7 +49,7 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        var token = _jwtTokenService.CreateToken(user);
+        var token = _jwtTokenService.Generate(user);
 
         HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", token,
             new CookieOptions
@@ -37,6 +57,6 @@ public class AuthController : ControllerBase
                 MaxAge = TimeSpan.FromMinutes(60)
             });
 
-        return Ok(new { token });
+        return Ok();
     }
 }
