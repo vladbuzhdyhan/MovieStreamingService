@@ -25,7 +25,29 @@ public class UserService : Service<User>, IUserService
         user.CreatedAt = DateTime.Now;
         user.UpdatedAt = DateTime.Now;
 
+        if(_userRepository.GetByLoginAsync(user.Login).Result != null)
+        {
+            throw new Exception("User with this login already exists");
+        }
+
+        if(_userRepository.GetByEmailAsync(user.Email).Result != null)
+        {
+            throw new Exception("User with this email already exists");
+        }
+
         _userRepository.AddAsync(user);
+        return user;
+    }
+
+    public User Login(string login, string password)
+    {
+        var user = _userRepository.GetByLoginAsync(login).Result;
+
+        if (user == null || !VerifyPassword(password, user.PasswordHash))
+        {
+            throw new Exception("Invalid login or password");
+        }
+
         return user;
     }
 

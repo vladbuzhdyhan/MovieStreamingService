@@ -13,12 +13,10 @@ namespace MovieStreamingService.WebApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IUserService _userService;
-    private readonly IUserRepository _userRepository;
     private readonly JWTTokenService _jwtTokenService;
-    public AuthController(IUserService userService, IUserRepository userRepository, JWTTokenService jwtTokenService)
+    public AuthController(IUserService userService, JWTTokenService jwtTokenService)
     {
         _userService = userService;
-        _userRepository = userRepository;
         _jwtTokenService = jwtTokenService;
     }
 
@@ -27,14 +25,18 @@ public class AuthController : ControllerBase
     {
         var user = new User
         {
-            Login = registerModel.Username,
+            Login = registerModel.Login,
             PasswordHash = registerModel.Password,
             Email = registerModel.Email,
             Birthday = registerModel.Birthday,
             Gender = registerModel.Gender
         };
 
-        _userService.Register(user);
+        try {
+            _userService.Register(user);
+        } catch (Exception e) {
+            return BadRequest(e.Message);
+        }
 
         return Ok();
     }
@@ -42,11 +44,11 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserCredentials loginModel)
     {
-        var user = _userRepository.GetByLoginAsync(loginModel.Username).Result;
-
-        if (user == null || !UserService.VerifyPassword(loginModel.Password, user.PasswordHash))
-        {
-            return Unauthorized();
+        User user;
+        try {
+            user = _userService.Login(loginModel.Login, loginModel.Password);
+        } catch (Exception e) {
+            return BadRequest(e.Message);
         }
 
         var token = _jwtTokenService.Generate(user);
