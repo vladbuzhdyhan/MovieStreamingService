@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MovieStreamingService.Domain\MovieStreamingService.Domain.csproj" />
+    <ProjectReference Include="..\MovieStreamingService.Persistence\MovieStreamingService.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

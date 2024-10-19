@@ -22,6 +22,7 @@ public static class DependencyInjection
     private static void AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<DataSeederService>();
         services.AddScoped<JWTTokenService>();
     }
 }

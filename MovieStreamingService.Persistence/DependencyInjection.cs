@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MovieStreamingService.Persistence.Context;
 using MovieStreamingService.Domain.Interfaces;
 using MovieStreamingService.Persistence.Repositories;
+using MovieStreamingService.Persistence.Seeders;
 
 namespace MovieStreamingService.Persistence;
 
@@ -37,5 +38,6 @@ public static class DependencyInjection
         services.AddScoped<ITypeRepository, TypeRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+        services.AddScoped<DataSeederHelper>();
     }
 }
