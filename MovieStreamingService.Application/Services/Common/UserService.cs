@@ -14,7 +14,7 @@ public class UserService : Service<User>, IUserService
         _userRepository = userRepository;
     }
 
-    public User Register(User user)
+    public async Task Register(User user)
     {
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
@@ -35,8 +35,7 @@ public class UserService : Service<User>, IUserService
             throw new Exception("User with this email already exists");
         }
 
-        _userRepository.AddAsync(user);
-        return user;
+        await _userRepository.AddAsync(user);
     }
 
     public User Login(string login, string password)

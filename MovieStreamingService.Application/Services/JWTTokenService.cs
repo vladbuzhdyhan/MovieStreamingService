@@ -10,12 +10,10 @@ namespace MovieStreamingService.Application.Services;
 
 public class JWTTokenService
 {
-    private readonly IUserRepository _userRepository;
     private readonly string _secretKey;
 
-    public JWTTokenService(IUserRepository userRepository, string secretKey)
+    public JWTTokenService(string secretKey)
     {
-        _userRepository = userRepository;
         _secretKey = secretKey;
     }
 
@@ -33,7 +31,7 @@ public class JWTTokenService
                 new Claim(ClaimTypes.Name, user.Login),
                 new Claim(ClaimTypes.Role, userRole)
             }),
-            Expires = DateTime.UtcNow.AddHours(1),
+            Expires = DateTime.UtcNow.AddDays(180),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 

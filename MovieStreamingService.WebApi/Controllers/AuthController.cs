@@ -56,7 +56,7 @@ public class AuthController : ControllerBase
         HttpContext.Response.Cookies.Append(".AspNetCore.Application.Id", token,
             new CookieOptions
             {
-                MaxAge = TimeSpan.FromMinutes(60)
+                MaxAge = TimeSpan.FromDays(180)
             });
 
         return Ok();
