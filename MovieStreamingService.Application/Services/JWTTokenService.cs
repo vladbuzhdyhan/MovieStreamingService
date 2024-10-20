@@ -28,7 +28,7 @@ public class JWTTokenService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.Login),
+                new Claim("userId", user.Id.ToString()),
                 new Claim(ClaimTypes.Role, userRole)
             }),
             Expires = DateTime.UtcNow.AddDays(180),
