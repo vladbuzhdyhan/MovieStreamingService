@@ -22,6 +22,10 @@ public abstract class Repository<T> : IRepository<T> where T : class
     {
         return await Context.Set<T>().FindAsync(keys);
     }
+    public async Task<IEnumerable<T>> GetByPageAsync(int page, int pageSize)
+    {
+        return await Context.Set<T>().Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+    }
 
     public async Task AddAsync(T entity)
     {

@@ -45,7 +45,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 builder.Services.AddAuthorization();
-builder.Services.AddAntiforgery(options => { options.HeaderName = "x-xsrf-token"; });
 builder.Services.AddCors();
 
 builder.Services.AddPersistenceLayer(configuration);

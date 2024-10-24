@@ -14,6 +14,16 @@ public class UserService : Service<User>, IUserService
         _userRepository = userRepository;
     }
 
+    public Task<User?> GetByLoginAsync(string login)
+    {
+        return _userRepository.GetByLoginAsync(login);
+    }
+
+    public Task<User?> GetByEmailAsync(string email)
+    {
+        return _userRepository.GetByEmailAsync(email);
+    }
+
     public async Task Register(User user)
     {
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);

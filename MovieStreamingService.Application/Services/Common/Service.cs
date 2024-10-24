@@ -22,6 +22,11 @@ public class Service<T> : IService<T> where T : class
         return await _repository.GetByIdAsync(keys);
     }
 
+    public async Task<IEnumerable<T>> GetByPageAsync(int page, int pageSize)
+    {
+        return await _repository.GetByPageAsync(page, pageSize);
+    }
+
     public async Task AddAsync(T entity)
     {
         await _repository.AddAsync(entity);
