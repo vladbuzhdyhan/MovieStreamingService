@@ -83,13 +83,12 @@ namespace MovieStreamingService.WebApi.Controllers
                 user.Birthday = userDto.Birthday;
                 user.LastSeenAt = userDto.LastSeenAt;
                 user.Gender = Enum.Parse<Gender>(userDto.Gender);
+                _userService.UpdateAsync(user);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
-            _userService.UpdateAsync(user);
 
             return Ok();
         }
@@ -124,6 +123,26 @@ namespace MovieStreamingService.WebApi.Controllers
                 user.LastSeenAt,
                 user.Gender.ToString()
             )));
+        }
+
+        [HttpPut("{id}/change-password")]
+        public IActionResult ChangePassword(Guid id, string password)
+        {
+            var user = _userService.GetByIdAsync(id).Result;
+
+            if (user == null)
+                return NotFound();
+
+            try
+            {
+                _userService.ChangePassword(user, password);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
         }
     }
 }

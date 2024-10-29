@@ -9,4 +9,5 @@ public interface IUserService : IService<User>
     Task<User?> GetByEmailAsync(string email);
     Task Register(User user);
     User Login(string login, string password);
+    Task ChangePassword(User user, string newPassword);
 }

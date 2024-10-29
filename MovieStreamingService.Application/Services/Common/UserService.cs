@@ -64,4 +64,10 @@ public class UserService : Service<User>, IUserService
     {
         return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);
     }
+
+    public async Task ChangePassword(User user, string newPassword)
+    {
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+        await _userRepository.UpdateAsync(user);
+    }
 }
