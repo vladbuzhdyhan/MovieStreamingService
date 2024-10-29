@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieStreamingService.Application.Interfaces;
 using MovieStreamingService.Domain.Enums;
 using MovieStreamingService.WebApi.Dto;
+using System.Security.Claims;
 
 namespace MovieStreamingService.WebApi.Controllers
 {
@@ -57,18 +61,23 @@ namespace MovieStreamingService.WebApi.Controllers
             )));
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(Guid id, [FromBody] UserDto userDto)
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult UpdateUser([FromBody] UserDto userDto)
         {
+            var id = User.FindFirst("userId");
+            if (id == null)
+                return BadRequest("Token is required");
+
             var user = _userService.GetByLoginAsync(userDto.Login).Result;
-            if(user != null && user.Id != id)
+            if(user != null && user.Id != Guid.Parse(id.Value))
                 return BadRequest("User with this login already exists");
 
             user = _userService.GetByEmailAsync(userDto.Email).Result;
-            if (user != null && user.Id != id)
+            if (user != null && user.Id != Guid.Parse(id.Value))
                 return BadRequest("User with this email already exists");
 
-            user = _userService.GetByIdAsync(id).Result;
+            user = _userService.GetByIdAsync(Guid.Parse(id.Value)).Result;
             if (user == null)
                 return NotFound();
 
@@ -125,10 +134,15 @@ namespace MovieStreamingService.WebApi.Controllers
             )));
         }
 
-        [HttpPut("{id}/change-password")]
-        public IActionResult ChangePassword(Guid id, string password)
+        [HttpPut("/change-password")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult ChangePassword(string password)
         {
-            var user = _userService.GetByIdAsync(id).Result;
+            var id = User.FindFirst("userId");
+            if(id == null)
+                return BadRequest("Token is required");
+
+            var user = _userService.GetByIdAsync(Guid.Parse(id.Value)).Result;
 
             if (user == null)
                 return NotFound();
