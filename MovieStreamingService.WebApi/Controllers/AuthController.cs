@@ -21,7 +21,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    public IActionResult Register([FromBody] RegisterModel registerModel)
+    public async Task<IActionResult> Register([FromBody] RegisterModel registerModel)
     {
         var user = new User
         {
@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
         };
 
         try {
-            _userService.Register(user);
+            await _userService.Register(user);
         } catch (Exception e) {
             return BadRequest(e.Message);
         }

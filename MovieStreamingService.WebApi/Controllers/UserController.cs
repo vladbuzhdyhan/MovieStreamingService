@@ -6,6 +6,7 @@ using MovieStreamingService.Application.Interfaces;
 using MovieStreamingService.Domain.Enums;
 using MovieStreamingService.WebApi.Dto;
 using System.Security.Claims;
+using MovieStreamingService.Domain.Models;
 
 namespace MovieStreamingService.WebApi.Controllers
 {
@@ -13,10 +14,12 @@ namespace MovieStreamingService.WebApi.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
+        private readonly IFavouriteService _favouriteService;
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UserController(IFavouriteService favouriteService, IUserService userService)
         {
+            _favouriteService = favouriteService;
             _userService = userService;
         }
 
@@ -63,7 +66,7 @@ namespace MovieStreamingService.WebApi.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult UpdateUser([FromBody] UserDto userDto)
+        public async Task<IActionResult> UpdateUser([FromBody] UserDto userDto)
         {
             var id = User.FindFirst("userId");
             if (id == null)
@@ -92,7 +95,7 @@ namespace MovieStreamingService.WebApi.Controllers
                 user.Birthday = userDto.Birthday;
                 user.LastSeenAt = userDto.LastSeenAt;
                 user.Gender = Enum.Parse<Gender>(userDto.Gender);
-                _userService.UpdateAsync(user);
+                await _userService.UpdateAsync(user);
             }
             catch (Exception e)
             {
@@ -103,14 +106,14 @@ namespace MovieStreamingService.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(Guid id)
+        public async Task<IActionResult> DeleteUser(Guid id)
         {
             var user = _userService.GetByIdAsync(id).Result;
 
             if (user == null)
                 return NotFound();
 
-            _userService.DeleteAsync(user);
+            await _userService.DeleteAsync(user);
 
             return Ok();
         }
@@ -136,7 +139,7 @@ namespace MovieStreamingService.WebApi.Controllers
 
         [HttpPut("/change-password")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult ChangePassword(string password)
+        public async Task<IActionResult> ChangePassword(string password)
         {
             var id = User.FindFirst("userId");
             if(id == null)
@@ -149,12 +152,76 @@ namespace MovieStreamingService.WebApi.Controllers
 
             try
             {
-                _userService.ChangePassword(user, password);
+                await _userService.ChangePassword(user, password);
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
+
+            return Ok();
+        }
+
+        [HttpPut("/change-role")]
+        public async Task<IActionResult> ChangeRole(Guid id, string role)
+        {
+            var user = _userService.GetByIdAsync(id).Result;
+
+            if (user == null)
+                return NotFound();
+
+            try
+            {
+                user.Role = Enum.Parse<Role>(role);
+                await _userService.UpdateAsync(user);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("/add-favourite")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> AddFavourite(int movieId)
+        {
+            var id = User.FindFirst("userId");
+            if (id == null)
+                return BadRequest("Token is required");
+
+            try
+            {
+                await _favouriteService.AddAsync(new Favourite
+                {
+                    MovieId = movieId,
+                    UserId = Guid.Parse(id.Value),
+                    AddDate = DateTime.Now
+                });
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete("/delete-favourite")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteFavourite(int movieId)
+        {
+            var id = User.FindFirst("userId");
+            if (id == null)
+                return BadRequest("Token is required");
+
+            var favourite = _favouriteService.GetByIdAsync(Guid.Parse(id.Value), movieId).Result;
+
+            if (favourite == null)
+                return NotFound();
+
+            await _favouriteService.DeleteAsync(favourite);
 
             return Ok();
         }

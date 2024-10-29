@@ -4,11 +4,11 @@ using MovieStreamingService.Domain.Models;
 
 namespace MovieStreamingService.Application.Services.Common;
 
-public class FavoriteService : Service<Favourite>, IFavouriteService
+public class FavouriteService : Service<Favourite>, IFavouriteService
 {
     private readonly IFavouriteRepository _favoriteRepository;
 
-    public FavoriteService(IFavouriteRepository favouriteRepository) : base(favouriteRepository)
+    public FavouriteService(IFavouriteRepository favouriteRepository) : base(favouriteRepository)
     {
         _favoriteRepository = favouriteRepository;
     }
