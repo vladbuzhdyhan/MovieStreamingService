@@ -183,7 +183,20 @@ namespace MovieStreamingService.WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost("/add-favourite")]
+        [HttpGet("/favourite")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public IActionResult GetFavourites()
+        {
+            var id = User.FindFirst("userId");
+            if (id == null)
+                return BadRequest("Token is required");
+
+            var favourites = _favouriteService.GetByUserIdAsync(Guid.Parse(id.Value)).Result;
+
+            return Ok(favourites.Select(f => f.Movie));
+        }
+
+        [HttpPost("/favourite")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> AddFavourite(int movieId)
         {
@@ -208,7 +221,7 @@ namespace MovieStreamingService.WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("/delete-favourite")]
+        [HttpDelete("/favourite")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteFavourite(int movieId)
         {

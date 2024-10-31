@@ -12,4 +12,9 @@ public class FavouriteService : Service<Favourite>, IFavouriteService
     {
         _favoriteRepository = favouriteRepository;
     }
+
+    public async Task<IEnumerable<Favourite>> GetByUserIdAsync(Guid userId)
+    {
+        return await _favoriteRepository.GetByUserIdAsync(userId);
+    }
 }
