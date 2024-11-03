@@ -12,7 +12,8 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(f => f.Id).ValueGeneratedOnAdd();
 
         builder.Property(f => f.Name).IsRequired();
-        builder.Property(f => f.Description).IsRequired();
+        builder.Property(f => f.Description).IsRequired()
+            .HasColumnType("longtext");
         builder.Property(f => f.RestrictedRating).IsRequired();
         builder.Property(f => f.Poster).IsRequired();
         builder.Property(f => f.ImdbRating).IsRequired();
@@ -62,5 +63,9 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.HasOne(m => m.Status)
             .WithMany(s => s.Movies)
             .HasForeignKey(m => m.StatusId);
+
+        builder.HasIndex(m => new { m.Name, m.Description})
+            .HasDatabaseName("fulltext_movies_index")
+            .IsFullText();
     }
 }
