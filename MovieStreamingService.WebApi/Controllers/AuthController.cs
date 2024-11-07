@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieStreamingService.Application.Interfaces;
 using MovieStreamingService.Application.Services;
 using MovieStreamingService.Application.Services.Common;
@@ -47,6 +49,8 @@ public class AuthController : ControllerBase
         User user;
         try {
             user = _userService.Login(loginModel.Login, loginModel.Password);
+            user.LastSeenAt = DateTime.UtcNow;
+            _userService.UpdateAsync(user).Wait();
         } catch (Exception e) {
             return BadRequest(e.Message);
         }
@@ -59,6 +63,19 @@ public class AuthController : ControllerBase
                 MaxAge = TimeSpan.FromDays(180)
             });
 
+        return Ok();
+    }
+    [HttpPost("logout")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete(".AspNetCore.Application.Id", new CookieOptions
+        {
+            Path = "/",
+            Domain = "localhost", 
+            Secure = true,        
+            SameSite = SameSiteMode.Lax
+        });
         return Ok();
     }
 }
