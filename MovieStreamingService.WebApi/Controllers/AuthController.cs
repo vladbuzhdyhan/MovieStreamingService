@@ -7,6 +7,7 @@ using MovieStreamingService.Application.Services.Common;
 using MovieStreamingService.Domain.Interfaces;
 using MovieStreamingService.Domain.Models;
 using MovieStreamingService.WebApi.Controllers.Models;
+using MovieStreamingService.WebApi.Dto;
 
 namespace MovieStreamingService.WebApi.Controllers;
 
@@ -77,5 +78,31 @@ public class AuthController : ControllerBase
             SameSite = SameSiteMode.Lax
         });
         return Ok();
+    }
+
+    [HttpGet("me")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> Me()
+    {
+        var id = User.FindFirst("userId");
+        if (id == null)
+            return Unauthorized("Token is required");
+
+        var user = await _userService.GetByIdAsync(Guid.Parse(id.Value));
+        user.LastSeenAt = DateTime.Now;
+        await _userService.UpdateAsync(user);
+
+        return Ok(new UserDto(
+            user.Id,
+            user.Login,
+            user.Description,
+            user.Name,
+            user.Email,
+            user.Role.ToString(),
+            null,
+            user.Birthday,
+            user.LastSeenAt,
+            user.Gender.ToString()
+            ));
     }
 }
