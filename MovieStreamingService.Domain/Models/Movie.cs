@@ -17,6 +17,8 @@ public class Movie : AuditableSeoEntity<int>
     public int TypeId { get; set; }
     public int StatusId { get; set; }
     public string Background { get; set; }
+    public string BigPoster { get; set; }
+    public string ImageTitle { get; set; }
     public List<Tag> Tags { get; set; } = [];
     public List<Review> Reviews { get; set; } = [];
     public List<Country> Countries { get; set; } = [];

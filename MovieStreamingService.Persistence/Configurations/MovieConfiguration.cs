@@ -8,21 +8,23 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 {
     public void Configure(EntityTypeBuilder<Movie> builder)
     {
-        builder.HasKey(f => f.Id);
-        builder.Property(f => f.Id).ValueGeneratedOnAdd();
+        builder.HasKey(m => m.Id);
+        builder.Property(m => m.Id).ValueGeneratedOnAdd();
 
-        builder.Property(f => f.Name).IsRequired();
-        builder.Property(f => f.Description).IsRequired()
+        builder.Property(m => m.Name).IsRequired();
+        builder.Property(m => m.Description).IsRequired()
             .HasColumnType("longtext");
-        builder.Property(f => f.RestrictedRating).IsRequired();
-        builder.Property(f => f.Poster).IsRequired();
-        builder.Property(f => f.ImdbRating).IsRequired();
-        builder.Property(f => f.TypeId).IsRequired();
-        builder.Property(f => f.StatusId).IsRequired();
-        builder.Property(f => f.Background).IsRequired();
-        builder.Property(f => f.Slug).IsRequired();
-        builder.Property(f => f.CreatedAt).IsRequired();
-        builder.Property(f => f.UpdatedAt).IsRequired();
+        builder.Property(m => m.RestrictedRating).IsRequired();
+        builder.Property(m => m.Poster).IsRequired();
+        builder.Property(m => m.ImdbRating).IsRequired();
+        builder.Property(m => m.TypeId).IsRequired();
+        builder.Property(m => m.StatusId).IsRequired();
+        builder.Property(m => m.Background).IsRequired();
+        builder.Property(m => m.Slug).IsRequired();
+        builder.Property(m => m.CreatedAt).IsRequired();
+        builder.Property(m => m.UpdatedAt).IsRequired();
+        builder.Property(m => m.BigPoster).IsRequired();
+        builder.Property(m => m.ImageTitle).IsRequired();
 
         builder.HasMany(m => m.Tags)
             .WithMany(t => t.Movies);
