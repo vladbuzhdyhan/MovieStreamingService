@@ -21,7 +21,7 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Movie>> GetAllAsync()
+    public new async Task<IEnumerable<Movie>> GetAllAsync()
     {
         return await Context.Movies
             .Include(m => m.Type)
@@ -29,5 +29,15 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .Include(m => m.Countries)
             .Include(m => m.Tags)
             .ToListAsync();
+    }
+
+    public new async Task<Movie?> GetByIdAsync(params object[] keys)
+    {
+        return await Context.Movies
+            .Include(m => m.Type)
+            .Include(m => m.Status)
+            .Include(m => m.Countries)
+            .Include(m => m.Tags)
+            .FirstAsync(m => m.Id == (int)keys[0]);
     }
 }
