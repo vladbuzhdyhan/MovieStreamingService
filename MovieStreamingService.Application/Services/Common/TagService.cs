@@ -12,4 +12,14 @@ public class TagService : Service<Tag>, ITagService
     {
         _tagRepository = tagRepository;
     }
+
+    public async Task<IEnumerable<Tag>> GetTagsAsync()
+    {
+        return await _tagRepository.GetTagsAsync();
+    }
+
+    public async Task<IEnumerable<Tag>> GetGenresAsync()
+    {
+        return await _tagRepository.GetGenresAsync();
+    }
 }

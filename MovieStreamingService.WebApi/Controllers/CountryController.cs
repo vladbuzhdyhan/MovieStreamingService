@@ -118,14 +118,7 @@ public class CountryController : ControllerBase
         if (country == null)
             return NotFound();
 
-        try
-        {
-            await _countryService.DeleteAsync(country);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
+        await _countryService.DeleteAsync(country);
 
         return Ok();
     }

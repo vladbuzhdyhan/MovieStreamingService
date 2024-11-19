@@ -20,7 +20,7 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
             .WithMany(m => m.Tags);
 
         builder.HasMany(t => t.ChildTags)
-            .WithOne()
+            .WithOne(t => t.Parent)
             .HasForeignKey(t => t.ParentId);
     }
 }

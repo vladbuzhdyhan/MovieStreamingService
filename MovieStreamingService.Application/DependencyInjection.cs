@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<ICountryService, CountryService>();
         services.AddScoped<IFavouriteService, FavouriteService>();
         services.AddScoped<IMovieService, MovieService>();
+        services.AddScoped<ITagService, TagService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<DataSeederService>();
         services.AddScoped<JWTTokenService>();
