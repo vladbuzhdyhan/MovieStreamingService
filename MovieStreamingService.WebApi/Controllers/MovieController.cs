@@ -11,7 +11,7 @@ namespace MovieStreamingService.WebApi.Controllers
     {
         private readonly IMovieService _movieService;
 
-        private static FormFile GetPosterFormFile(string? posterPath)
+        public static FormFile GetPosterFormFile(string? posterPath)
         {
             if (string.IsNullOrEmpty(posterPath))
                 return null;
@@ -35,7 +35,7 @@ namespace MovieStreamingService.WebApi.Controllers
             };
         }
 
-        private static FormFile GetBackgroundFormFile(string? backgroundPath)
+        public static FormFile GetBackgroundFormFile(string? backgroundPath)
         {
             if (string.IsNullOrEmpty(backgroundPath))
                 return null;
@@ -59,7 +59,7 @@ namespace MovieStreamingService.WebApi.Controllers
             };
         }
 
-        private static FormFile GetBigPosterFormFile(string? bigPosterPath)
+        public static FormFile GetBigPosterFormFile(string? bigPosterPath)
         {
             if (string.IsNullOrEmpty(bigPosterPath))
                 return null;
@@ -83,7 +83,7 @@ namespace MovieStreamingService.WebApi.Controllers
             };
         }
 
-        private static FormFile GetImageTitleFormFile(string? imageTitlePath)
+        public static FormFile GetImageTitleFormFile(string? imageTitlePath)
         {
             if (string.IsNullOrEmpty(imageTitlePath))
                 return null;

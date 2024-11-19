@@ -38,6 +38,6 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .Include(m => m.Status)
             .Include(m => m.Countries)
             .Include(m => m.Tags)
-            .FirstAsync(m => m.Id == (int)keys[0]);
+            .FirstOrDefaultAsync(m => m.Id == (int)keys[0]);
     }
 }
