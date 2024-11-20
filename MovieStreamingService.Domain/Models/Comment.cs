@@ -8,6 +8,7 @@ public class Comment : AuditableEntity<long>
     public int EpisodeId { get; set; }
     public long? ParentId { get; set; }
     public Guid UserId { get; set; }
+    public Comment? Parent { get; set; }
     public List<Comment> Replies { get; set; } = [];
     public User User { get; set; }
 }

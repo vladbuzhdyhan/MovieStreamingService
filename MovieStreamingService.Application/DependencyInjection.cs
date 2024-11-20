@@ -21,6 +21,7 @@ public static class DependencyInjection
 
     private static void AddServices(this IServiceCollection services)
     {
+        services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<ICountryService, CountryService>();
         services.AddScoped<IFavouriteService, FavouriteService>();
         services.AddScoped<IMovieService, MovieService>();

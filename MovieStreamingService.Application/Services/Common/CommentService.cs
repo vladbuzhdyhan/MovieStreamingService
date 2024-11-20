@@ -12,4 +12,9 @@ public class CommentService : Service<Comment>, ICommentService
     {
         _commentRepository = commentRepository;
     }
+
+    public async Task<IEnumerable<Comment>> GetByEpisodeIdAsync(int episodeId)
+    {
+        return await _commentRepository.GetByEpisodeIdAsync(episodeId);
+    }
 }
