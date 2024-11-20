@@ -161,7 +161,17 @@ namespace MovieStreamingService.WebApi.Controllers
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
-                Tags = movie.Tags.Select(tag => tag.Name).ToList()
+                Tags = movie.Tags.Select(tag => tag.Name).ToList(),
+                People = movie.People.Select(person => new PersonDto
+                {
+                    Id = person.Id,
+                    FirstName = person.FirstName,
+                    LastName = person.LastName,
+                    BirthDate = person.BirthDate,
+                    DeathDate = person.DeathDate,
+                    Image = PersonController.GetImageFormFile(person.Image),
+                    Biography = person.Biography
+                }).ToList()
             });
         }
 

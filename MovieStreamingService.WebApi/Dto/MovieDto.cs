@@ -17,4 +17,5 @@ public class MovieDto {
     public IFormFile ImageTitle { get; set; }
     public List<string> Countries { get; set; } = [];
     public List<string> Tags { get; set; } = [];
+    public List<PersonDto> People { get; set; } = [];
 }
