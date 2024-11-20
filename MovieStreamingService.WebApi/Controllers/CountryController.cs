@@ -23,7 +23,11 @@ public class CountryController : ControllerBase
         return Ok(countries.Select(country => new CountryDto
         {
             Id = country.Id,
-            Name = country.Name
+            Name = country.Name,
+            Slug = country.Slug,
+            MetaTitle = country.MetaTitle,
+            MetaDescription = country.MetaDescription,
+            MetaImage = country.MetaImage
         }));
     }
 
@@ -34,7 +38,11 @@ public class CountryController : ControllerBase
         return Ok(countries.Select(country => new CountryDto
         {
             Id = country.Id,
-            Name = country.Name
+            Name = country.Name,
+            Slug = country.Slug,
+            MetaTitle = country.MetaTitle,
+            MetaDescription = country.MetaDescription,
+            MetaImage = country.MetaImage
         }));
     }
 
@@ -49,6 +57,10 @@ public class CountryController : ControllerBase
         {
             Id = country.Id,
             Name = country.Name,
+            Slug = country.Slug,
+            MetaTitle = country.MetaTitle,
+            MetaDescription = country.MetaDescription,
+            MetaImage = country.MetaImage,
             Movies = country.Movies.Select(movie => new MovieDto
             {
                 Id = movie.Id,
@@ -75,7 +87,11 @@ public class CountryController : ControllerBase
     {
         var country = new Country
         {
-            Name = countryDto.Name
+            Name = countryDto.Name,
+            Slug = countryDto.Slug,
+            MetaTitle = countryDto.MetaTitle,
+            MetaDescription = countryDto.MetaDescription,
+            MetaImage = countryDto.MetaImage
         };
 
         try
@@ -98,6 +114,10 @@ public class CountryController : ControllerBase
             return NotFound();
 
         country.Name = countryDto.Name;
+        country.Slug = countryDto.Slug;
+        country.MetaTitle = countryDto.MetaTitle;
+        country.MetaDescription = countryDto.MetaDescription;
+        country.MetaImage = countryDto.MetaImage;
 
         try
         {

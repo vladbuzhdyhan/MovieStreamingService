@@ -54,7 +54,11 @@ public class PersonController : ControllerBase
             BirthDate = person.BirthDate,
             DeathDate = person.DeathDate,
             Image = GetImageFormFile(person.Image),
-            Biography = person.Biography
+            Biography = person.Biography,
+            Slug = person.Slug,
+            MetaTitle = person.MetaTitle,
+            MetaDescription = person.MetaDescription,
+            MetaImage = person.MetaImage
         }));
     }
 
@@ -71,7 +75,11 @@ public class PersonController : ControllerBase
             BirthDate = person.BirthDate,
             DeathDate = person.DeathDate,
             Image = GetImageFormFile(person.Image),
-            Biography = person.Biography
+            Biography = person.Biography,
+            Slug = person.Slug,
+            MetaTitle = person.MetaTitle,
+            MetaDescription = person.MetaDescription,
+            MetaImage = person.MetaImage
         }));
     }
 
@@ -91,6 +99,10 @@ public class PersonController : ControllerBase
             DeathDate = person.DeathDate,
             Image = GetImageFormFile(person.Image),
             Biography = person.Biography,
+            Slug = person.Slug,
+            MetaTitle = person.MetaTitle,
+            MetaDescription = person.MetaDescription,
+            MetaImage = person.MetaImage,
             Movies = person.Movies.Select(
                 movie => new MovieDto
                 {
@@ -134,7 +146,11 @@ public class PersonController : ControllerBase
             LastName = personDto.LastName,
             BirthDate = personDto.BirthDate,
             DeathDate = personDto.DeathDate,
-            Biography = personDto.Biography
+            Biography = personDto.Biography,
+            Slug = personDto.Slug,
+            MetaTitle = personDto.MetaTitle,
+            MetaDescription = personDto.MetaDescription,
+            MetaImage = personDto.MetaImage
         };
 
         if (personDto.Image != null)
@@ -175,6 +191,10 @@ public class PersonController : ControllerBase
         person.BirthDate = personDto.BirthDate;
         person.DeathDate = personDto.DeathDate;
         person.Biography = personDto.Biography;
+        person.Slug = personDto.Slug;
+        person.MetaTitle = personDto.MetaTitle;
+        person.MetaDescription = personDto.MetaDescription;
+        person.MetaImage = personDto.MetaImage;
 
         if (personDto.Image != null)
         {

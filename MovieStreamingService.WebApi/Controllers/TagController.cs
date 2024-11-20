@@ -27,6 +27,10 @@ public class TagController : ControllerBase
                 Name = tag.Name,
                 Description = tag.Description,
                 IsGenre = tag.IsGenre,
+                Slug = tag.Slug,
+                MetaTitle = tag.MetaTitle,
+                MetaDescription = tag.MetaDescription,
+                MetaImage = tag.MetaImage,
                 Parent = tag.Parent is null
                     ? null
                     : new TagDto
@@ -51,6 +55,10 @@ public class TagController : ControllerBase
                 Name = tag.Name,
                 Description = tag.Description,
                 IsGenre = tag.IsGenre,
+                Slug = tag.Slug,
+                MetaTitle = tag.MetaTitle,
+                MetaDescription = tag.MetaDescription,
+                MetaImage = tag.MetaImage,
                 Parent = tag.Parent is null
                     ? null
                     : new TagDto
@@ -75,6 +83,10 @@ public class TagController : ControllerBase
                 Name = genre.Name,
                 Description = genre.Description,
                 IsGenre = genre.IsGenre,
+                Slug = genre.Slug,
+                MetaTitle = genre.MetaTitle,
+                MetaDescription = genre.MetaDescription,
+                MetaImage = genre.MetaImage,
                 Parent = genre.Parent is null
                     ? null
                     : new TagDto
@@ -99,6 +111,10 @@ public class TagController : ControllerBase
                 Name = tag.Name,
                 Description = tag.Description,
                 IsGenre = tag.IsGenre,
+                Slug = tag.Slug,
+                MetaTitle = tag.MetaTitle,
+                MetaDescription = tag.MetaDescription,
+                MetaImage = tag.MetaImage,
                 Parent = tag.Parent is null
                     ? null
                     : new TagDto
@@ -127,6 +143,10 @@ public class TagController : ControllerBase
             Name = tag.Name,
             Description = tag.Description,
             IsGenre = tag.IsGenre,
+            Slug = tag.Slug,
+            MetaTitle = tag.MetaTitle,
+            MetaDescription = tag.MetaDescription,
+            MetaImage = tag.MetaImage,
             Parent = tag.Parent is null
                 ? null
                 : new TagDto
@@ -176,7 +196,11 @@ public class TagController : ControllerBase
             Name = tagDto.Name,
             Description = tagDto.Description,
             IsGenre = tagDto.IsGenre,
-            ParentId = tagDto.Parent?.Id
+            ParentId = tagDto.Parent?.Id,
+            Slug = tagDto.Slug,
+            MetaTitle = tagDto.MetaTitle,
+            MetaDescription = tagDto.MetaDescription,
+            MetaImage = tagDto.MetaImage,
         };
 
         try
@@ -201,6 +225,10 @@ public class TagController : ControllerBase
         tag.Description = tagDto.Description;
         tag.IsGenre = tagDto.IsGenre;
         tag.ParentId = tagDto.Parent?.Id;
+        tag.Slug = tagDto.Slug;
+        tag.MetaTitle = tagDto.MetaTitle;
+        tag.MetaDescription = tagDto.MetaDescription;
+        tag.MetaImage = tagDto.MetaImage;
 
         try
         {
