@@ -12,4 +12,9 @@ public class EpisodeService : Service<Episode>, IEpisodeService
     {
         _episodeRepository = episodeRepository;
     }
+
+    public async Task<IEnumerable<Episode>> GetBySeasonIdAsync(int seasonId)
+    {
+        return await _episodeRepository.GetBySeasonIdAsync(seasonId);
+    }
 }

@@ -23,6 +23,7 @@ public static class DependencyInjection
     {
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<ICountryService, CountryService>();
+        services.AddScoped<IEpisodeService, EpisodeService>();
         services.AddScoped<IFavouriteService, FavouriteService>();
         services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<IPersonService, PersonService>();
