@@ -42,11 +42,6 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .HasForeignKey(s => s.MovieId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(m => m.Episodes)
-            .WithOne(e => e.Movie)
-            .HasForeignKey(e => e.MovieId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasMany(m => m.Studios)
             .WithMany(s => s.Movies);
 

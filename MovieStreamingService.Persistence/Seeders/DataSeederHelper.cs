@@ -68,11 +68,11 @@ public class DataSeederHelper
         await SeedUserAsync();
         await SeedUserSubscriptionsAsync();
         await SeedMoviesAsync();
-        await SeedEpisodesAsync();
-        await SeedCommentsAsync();
         await SeedFavouritesAsync();
         await SeedReviewsAsync();
         await SeedSeasonsAsync();
+        await SeedEpisodesAsync();
+        await SeedCommentsAsync();
     }
 
     private async Task SeedCommentsAsync()
@@ -97,8 +97,8 @@ public class DataSeederHelper
 
     private async Task SeedEpisodesAsync()
     {
-        var existingMovies = (await _movieRepository.GetAllAsync()).ToList();
-        var episodes = EpisodeDataGenerator.GenerateEpisodes(10, existingMovies);
+        var existingSeasons = (await _seasonRepository.GetAllAsync()).ToList();
+        var episodes = EpisodeDataGenerator.GenerateEpisodes(10, existingSeasons);
         foreach (var episode in episodes)
         {
             await _episodeRepository.AddAsync(episode);

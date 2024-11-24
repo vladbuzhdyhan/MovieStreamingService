@@ -15,7 +15,7 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
         builder.Property(e => e.Name).IsRequired();
         builder.Property(e => e.Description).IsRequired();
         builder.Property(e => e.Image).IsRequired();
-        builder.Property(e => e.MovieId).IsRequired();
+        builder.Property(e => e.SeasonId).IsRequired();
         builder.Property(e => e.Duration).IsRequired();
         builder.Property(e => e.AirDate).IsRequired();
         builder.Property(e => e.Slug).IsRequired();
@@ -27,9 +27,9 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
             .HasForeignKey(c => c.EpisodeId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(e => e.Movie)
+        builder.HasOne(e => e.Season)
             .WithMany(m => m.Episodes)
-            .HasForeignKey(e => e.MovieId)
+            .HasForeignKey(e => e.SeasonId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

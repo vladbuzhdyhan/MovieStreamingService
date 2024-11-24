@@ -13,7 +13,6 @@ public class SeasonDataGenerator
             .RuleFor(s => s.Number, f => f.Random.Number(1, 10))
             .RuleFor(s => s.MovieId, f => f.PickRandom(moviesId))
             .RuleFor(s => s.Name, f => f.Lorem.Sentence())
-            .RuleFor(s => s.GroupId, f => f.Random.Number(1, 10))
             .Generate(count);
     }
 }

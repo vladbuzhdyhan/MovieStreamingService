@@ -23,7 +23,6 @@ public class Movie : AuditableSeoEntity<int>
     public List<Review> Reviews { get; set; } = [];
     public List<Country> Countries { get; set; } = [];
     public List<Season> Seasons { get; set; } = [];
-    public List<Episode> Episodes { get; set; } = [];
     public List<Studio> Studios { get; set; } = [];
     public List<Person> People { get; set; } = [];
     public Status Status { get; set; }

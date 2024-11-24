@@ -21,6 +21,8 @@ public class MovieDataGenerator
             .RuleFor(m => m.ImdbRating, f => f.Random.Decimal(1, 10))
             .RuleFor(m => m.TypeId, f => f.PickRandom(typeIds))
             .RuleFor(m => m.StatusId, f => f.PickRandom(statusIds))
+            .RuleFor(m => m.BigPoster, f => f.Image.PicsumUrl())
+            .RuleFor(m => m.ImageTitle, f => f.Image.PicsumUrl())
             .RuleFor(m => m.Slug, f => f.Lorem.Slug())
             .RuleFor(m => m.CreatedAt, f => DateTime.Now)
             .RuleFor(m => m.UpdatedAt, f => DateTime.Now)
