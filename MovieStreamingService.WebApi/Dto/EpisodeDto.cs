@@ -1,4 +1,6 @@
-﻿namespace MovieStreamingService.WebApi.Dto;
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace MovieStreamingService.WebApi.Dto;
 
 public class EpisodeDto
 {

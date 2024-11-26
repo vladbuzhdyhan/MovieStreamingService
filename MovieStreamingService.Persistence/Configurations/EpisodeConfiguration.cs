@@ -18,6 +18,7 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
         builder.Property(e => e.SeasonId).IsRequired();
         builder.Property(e => e.Duration).IsRequired();
         builder.Property(e => e.AirDate).IsRequired();
+        builder.Property(e => e.Video).IsRequired();
         builder.Property(e => e.Slug).IsRequired();
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(e => e.UpdatedAt).IsRequired();

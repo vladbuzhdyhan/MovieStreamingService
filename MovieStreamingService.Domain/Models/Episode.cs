@@ -11,6 +11,7 @@ public class Episode : AuditableSeoEntity<int>
     public int SeasonId { get; set; }
     public int Duration { get; set; }
     public DateTime AirDate { get; set; }
+    public string Video { get; set; }
     public List<Comment> Comments { get; set; } = [];
     public Season Season { get; set; }
 }

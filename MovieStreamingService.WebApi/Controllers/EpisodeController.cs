@@ -40,15 +40,28 @@ public class EpisodeController : ControllerBase
         };
     }
 
+    public static FileStreamResult GetVideoStream(string? videoPath)
+    {
+        if (string.IsNullOrEmpty(videoPath) || !System.IO.File.Exists(Path.Combine("wwwroot/video", videoPath)))
+            return null; 
+
+        var fileStream = new FileStream(Path.Combine("wwwroot/video", videoPath), FileMode.Open, FileAccess.Read, FileShare.Read);
+
+        return new FileStreamResult(fileStream, "video/" + Path.GetExtension(videoPath).ToLower().Remove(0, 1))
+        {
+            EnableRangeProcessing = true
+        };
+    }
+
     public EpisodeController(IEpisodeService episodeService)
     {
         _episodeService = episodeService;
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetBySeasonId(int id)
+    public async Task<IActionResult> GetBySeasonId(int seasonId)
     {
-        var episodes = await _episodeService.GetBySeasonIdAsync(id);
+        var episodes = await _episodeService.GetBySeasonIdAsync(seasonId);
         return Ok(episodes.Select(
             episode => new EpisodeDto
             {
@@ -67,8 +80,22 @@ public class EpisodeController : ControllerBase
             ));
     }
 
+    [HttpGet("stream/{id}")]
+    public IActionResult StreamVideo(int id)
+    {
+        var episode = _episodeService.GetByIdAsync(id).Result;
+        if (episode == null)
+            return NotFound();
+
+        var video = GetVideoStream(episode.Video);
+        if (video == null)
+            return NotFound();
+
+        return video;
+    }
+
     [HttpPost]
-    public async Task<IActionResult> AddAsync(int seasonId, [FromForm] EpisodeDto episodeDto)
+    public async Task<IActionResult> AddAsync(int seasonId, [FromForm] EpisodeDto episodeDto, IFormFile video)
     {
         if (episodeDto.Image != null)
         {
@@ -79,6 +106,14 @@ public class EpisodeController : ControllerBase
 
             if (episodeDto.Image.Length > 2 * 1024 * 1024)
                 return BadRequest("File is too big");
+        }
+
+        if (video != null)
+        {
+            var validExtensions = new[] { ".mp4", ".mov", ".m3u8", ".avi" };
+            var fileExtension = Path.GetExtension(video.FileName).ToLower();
+            if (!validExtensions.Contains(fileExtension))
+                return BadRequest("This file type is not supported");
         }
 
         var episode = new Episode
@@ -104,6 +139,15 @@ public class EpisodeController : ControllerBase
 
         episode.Image = fileName;
 
+        var videoName = $"{Guid.NewGuid()}{Path.GetExtension(episodeDto.Image.FileName).ToLower()}";
+        var videoPath = Path.Combine("wwwroot/video", videoName);
+        await using (var fileStream = new FileStream(videoPath, FileMode.Create))
+        {
+            await video.CopyToAsync(fileStream);
+        }
+
+        episode.Video = videoName;
+
         try
         {
             await _episodeService.AddAsync(episode);
@@ -116,7 +160,7 @@ public class EpisodeController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromForm] EpisodeDto episodeDto)
+    public async Task<IActionResult> UpdateAsync(int id, [FromForm] EpisodeDto episodeDto, IFormFile? video)
     {
         var episode = await _episodeService.GetByIdAsync(id);
         if (episode == null)
@@ -139,6 +183,23 @@ public class EpisodeController : ControllerBase
 
         System.IO.File.Delete(Path.Combine("wwwroot/episode", episode.Image));
         episode.Image = fileName;
+
+        if (video != null) {
+            validExtensions = [".mp4", ".mov", ".m3u8", ".avi"];
+            fileExtension = Path.GetExtension(video.FileName).ToLower();
+            if (!validExtensions.Contains(fileExtension))
+                return BadRequest("This file type is not supported");
+
+            fileName = $"{Guid.NewGuid()}{Path.GetExtension(video.FileName).ToLower()}";
+            filePath = Path.Combine("wwwroot/video", fileName);
+            await using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await video.CopyToAsync(fileStream);
+            }
+
+            System.IO.File.Delete(Path.Combine("wwwroot/video", episode.Video));
+            episode.Video = fileName;
+        }
 
         episode.Number = episodeDto.Number;
         episode.Name = episodeDto.Name;
@@ -170,6 +231,7 @@ public class EpisodeController : ControllerBase
             return NotFound();
 
         System.IO.File.Delete(Path.Combine("wwwroot/episode", episode.Image));
+        System.IO.File.Delete(Path.Combine("wwwroot/video", episode.Video));
 
         await _episodeService.DeleteAsync(episode);
 
