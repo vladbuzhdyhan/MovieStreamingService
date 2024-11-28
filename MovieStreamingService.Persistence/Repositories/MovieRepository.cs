@@ -21,6 +21,28 @@ public class MovieRepository : Repository<Movie>, IMovieRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Movie>> GetByTagAsync(string tag)
+    {
+        return await Context.Movies
+            .Where(m => m.Tags.Any(t => t.Name == tag))
+            .Include(m => m.Type)
+            .Include(m => m.Status)
+            .Include(m => m.Countries)
+            .Include(m => m.Tags)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetByTypeAsync(string type)
+    {
+        return await Context.Movies
+            .Where(m => m.Type.Name == type)
+            .Include(m => m.Type)
+            .Include(m => m.Status)
+            .Include(m => m.Countries)
+            .Include(m => m.Tags)
+            .ToListAsync();
+    }
+
     public new async Task<IEnumerable<Movie>> GetAllAsync()
     {
         return await Context.Movies

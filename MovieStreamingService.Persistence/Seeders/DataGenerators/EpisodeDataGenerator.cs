@@ -17,6 +17,7 @@ public class EpisodeDataGenerator
             .RuleFor(e => e.SeasonId, f => f.PickRandom(seasonIds))
             .RuleFor(e => e.Duration, f => f.Random.Number(40, 50))
             .RuleFor(e => e.AirDate, f => f.Date.Past())
+            .RuleFor(e => e.Video, f => f.Image.PicsumUrl())
             .RuleFor(e => e.Slug, f => f.Lorem.Slug())
             .RuleFor(e => e.CreatedAt, f => DateTime.Now)
             .RuleFor(e => e.UpdatedAt, f => DateTime.Now)

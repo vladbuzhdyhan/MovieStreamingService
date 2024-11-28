@@ -45,4 +45,14 @@ public class MovieService : Service<Movie>, IMovieService
 
         return query.Skip((page - 1) * pageSize).Take(pageSize).ToList();
     }
+
+    public async Task<IEnumerable<Movie>> GetByTagAsync(string tag)
+    {
+        return await _movieRepository.GetByTagAsync(tag);
+    }
+
+    public async Task<IEnumerable<Movie>> GetByTypeAsync(string type)
+    {
+        return await _movieRepository.GetByTypeAsync(type);
+    }
 }
