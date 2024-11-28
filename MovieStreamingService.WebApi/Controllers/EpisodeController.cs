@@ -58,7 +58,7 @@ public class EpisodeController : ControllerBase
         _episodeService = episodeService;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{seasonId}")]
     public async Task<IActionResult> GetBySeasonId(int seasonId)
     {
         var episodes = await _episodeService.GetBySeasonIdAsync(seasonId);

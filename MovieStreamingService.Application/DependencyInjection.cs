@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IFavouriteService, FavouriteService>();
         services.AddScoped<IMovieService, MovieService>();
         services.AddScoped<IPersonService, PersonService>();
+        services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<ITagService, TagService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<DataSeederService>();

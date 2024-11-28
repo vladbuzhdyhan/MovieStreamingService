@@ -11,4 +11,9 @@ public class SeasonService : Service<Season>, ISeasonService
     {
         _seasonRepository = seasonRepository;
     }
+
+    public async Task<IEnumerable<Season>> GetByMovieIdAsync(int movieId)
+    {
+        return await _seasonRepository.GetByMovieIdAsync(movieId);
+    }
 }
