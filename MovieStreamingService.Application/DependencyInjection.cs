@@ -2,21 +2,27 @@
 using MovieStreamingService.Application.Interfaces;
 using MovieStreamingService.Application.Services;
 using MovieStreamingService.Application.Services.Common;
-using System.Reflection;
 using Microsoft.Extensions.Configuration;
 
 namespace MovieStreamingService.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
+    public static void AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
     {
-        var secretKey = configuration["jwt-key"];
-        services.AddSingleton(secretKey);
+        services.AddScoped(sp =>
+        {
+            var secretKey = configuration["jwt-key"];
+            return new JWTTokenService(secretKey);
+        });
+        services.AddScoped(sp =>
+        {
+            var liqPublicKey = configuration["liq-public-key"];
+            var liqPrivateKey = configuration["liq-private-key"];
+            return new PaymentService(liqPublicKey, liqPrivateKey);
+        });
 
         services.AddServices();
-
-        return services;
     }
 
     private static void AddServices(this IServiceCollection services)
@@ -29,8 +35,9 @@ public static class DependencyInjection
         services.AddScoped<IPersonService, PersonService>();
         services.AddScoped<ISeasonService, SeasonService>();
         services.AddScoped<ITagService, TagService>();
+        services.AddScoped<ISubscriptionService, SubscriptionService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserSubscriptionService, UserSubscriptionService>();
         services.AddScoped<DataSeederService>();
-        services.AddScoped<JWTTokenService>();
     }
 }
