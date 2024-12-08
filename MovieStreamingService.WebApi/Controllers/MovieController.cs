@@ -134,7 +134,11 @@ namespace MovieStreamingService.WebApi.Controllers
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
-                Tags = movie.Tags.Select(tag => tag.Name).ToList()
+                Tags = movie.Tags.Select(tag => tag.Name).ToList(),
+                Slug = movie.Slug,
+                MetaTitle = movie.MetaTitle,
+                MetaDescription = movie.MetaDescription,
+                MetaImage = movie.MetaImage
             }));
         }
 
@@ -161,6 +165,10 @@ namespace MovieStreamingService.WebApi.Controllers
                 Background = GetBackgroundFormFile(movie.Background),
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
+                Slug = movie.Slug,
+                MetaTitle = movie.MetaTitle,
+                MetaDescription = movie.MetaDescription,
+                MetaImage = movie.MetaImage,
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
                 Tags = movie.Tags.Select(tag => tag.Name).ToList(),
                 People = movie.People.Select(person => new PersonDto
@@ -206,7 +214,11 @@ namespace MovieStreamingService.WebApi.Controllers
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
-                Tags = movie.Tags.Select(tag => tag.Name).ToList()
+                Tags = movie.Tags.Select(tag => tag.Name).ToList(),
+                Slug = movie.Slug,
+                MetaTitle = movie.MetaTitle,
+                MetaDescription = movie.MetaDescription,
+                MetaImage = movie.MetaImage
             }
             ));
         }
@@ -232,6 +244,10 @@ namespace MovieStreamingService.WebApi.Controllers
                 Background = GetBackgroundFormFile(movie.Background),
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
+                Slug = movie.Slug,
+                MetaTitle = movie.MetaTitle,
+                MetaDescription = movie.MetaDescription,
+                MetaImage = movie.MetaImage,
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
                 Tags = movie.Tags.Select(tag => tag.Name).ToList()
             }));
@@ -258,6 +274,10 @@ namespace MovieStreamingService.WebApi.Controllers
                 Background = GetBackgroundFormFile(movie.Background),
                 BigPoster = GetBigPosterFormFile(movie.BigPoster),
                 ImageTitle = GetImageTitleFormFile(movie.ImageTitle),
+                Slug = movie.Slug,
+                MetaTitle = movie.MetaTitle,
+                MetaDescription = movie.MetaDescription,
+                MetaImage = movie.MetaImage,
                 Countries = movie.Countries.Select(country => country.Name).ToList(),
                 Tags = movie.Tags.Select(tag => tag.Name).ToList()
             }));
@@ -302,6 +322,10 @@ namespace MovieStreamingService.WebApi.Controllers
                 LastAirDate = movieDto.LastAirDate,
                 AmountOfEpisodes = movieDto.AmountOfEpisodes,
                 ImdbRating = movieDto.ImdbRating,
+                Slug = movieDto.Slug,
+                MetaTitle = movieDto.MetaTitle,
+                MetaDescription = movieDto.MetaDescription,
+                MetaImage = movieDto.MetaImage,
                 Countries = movieDto.Countries.Select(country => new Country { Name = country }).ToList(),
                 Tags = movieDto.Tags.Select(tag => new Tag { Name = tag }).ToList()
             };
@@ -394,6 +418,10 @@ namespace MovieStreamingService.WebApi.Controllers
                 Background = movieDto.Background.FileName,
                 BigPoster = movieDto.BigPoster.FileName,
                 ImageTitle = movieDto.ImageTitle.FileName,
+                Slug = movieDto.Slug,
+                MetaTitle = movieDto.MetaTitle,
+                MetaDescription = movieDto.MetaDescription,
+                MetaImage = movieDto.MetaImage,
                 Countries = movieDto.Countries.Select(country => new Country { Name = country }).ToList(),
                 Tags = movieDto.Tags.Select(tag => new Tag { Name = tag }).ToList()
             };
